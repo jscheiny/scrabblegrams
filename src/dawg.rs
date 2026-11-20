@@ -6,7 +6,7 @@ use std::{
 
 use crate::{
     alphabet::{ALPHABET_LEN, LetterIndex, get_letter_index},
-    bit_set::LetterSet,
+    letter_set::LetterSet,
 };
 
 pub struct Dawg {

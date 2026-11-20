@@ -4,8 +4,8 @@ use crate::{
 };
 
 mod alphabet;
-mod bit_set;
 mod dawg;
+mod letter_set;
 
 fn main() {
     let dawg = Dawg::read("lexicon.txt").unwrap();
