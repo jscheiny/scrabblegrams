@@ -6,24 +6,7 @@ use std::{
 
 use itertools::Itertools;
 
-#[derive(Debug)]
-enum PuzzleSquare {
-    Empty,
-    Letter(PuzzleLetter),
-}
-
-#[derive(Debug)]
-struct PuzzleLetter {
-    letter: char,
-    status: PuzzleLetterStatus,
-}
-
-#[derive(Debug)]
-enum PuzzleLetterStatus {
-    Right,
-    Wrong,
-    Move,
-}
+use crate::puzzle_square::PuzzleSquare;
 
 pub struct Puzzle {
     grid: Vec<Vec<PuzzleSquare>>,
@@ -40,29 +23,19 @@ impl Puzzle {
             for mut entry in &line?.chars().chunks(2) {
                 let symbol = entry.next().unwrap();
                 let letter = entry.next().unwrap();
-                let square = get_puzzle_square(symbol, letter).unwrap();
+                let square = PuzzleSquare::from(symbol, letter).unwrap();
                 row.push(square);
             }
             grid.push(row);
         }
 
+        for row in &grid {
+            for square in row {
+                print!("{square}");
+            }
+            println!();
+        }
+
         Ok(Puzzle { grid })
-    }
-}
-
-fn get_puzzle_square(symbol: char, letter: char) -> Option<PuzzleSquare> {
-    match symbol {
-        ' ' => Some(PuzzleSquare::Empty),
-        _ => get_puzzle_letter_status(symbol)
-            .and_then(|status| Some(PuzzleSquare::Letter(PuzzleLetter { letter, status }))),
-    }
-}
-
-fn get_puzzle_letter_status(symbol: char) -> Option<PuzzleLetterStatus> {
-    match symbol {
-        '+' => Some(PuzzleLetterStatus::Right),
-        '-' => Some(PuzzleLetterStatus::Wrong),
-        '*' => Some(PuzzleLetterStatus::Move),
-        _ => None,
     }
 }
